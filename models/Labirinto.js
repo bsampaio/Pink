@@ -53,7 +53,7 @@ var Labirinto = function (lab, tabCustos) {
         x = (m.x + posX);
         y = (m.y + posY);
 
-        if (x >= 0 && y >= 0){
+        if ( (x >= 0 && x < self.MaxLines) && (y >= 0 && y < self.MaxColumns) ){
           if(self.labirinto[y][x] !== '0'){
             possiveis.push(new Pos(x,y));
           }
@@ -126,12 +126,14 @@ var Labirinto = function (lab, tabCustos) {
     };
   };
 
-  this.labirinto = lab;
+  this.labirinto = lab || [];
   this.tabelaCustos = tabCustos;
   this.inicio = this.acharChar('S');
   this.fim = this.acharChar('F');
   this.rato = this.inicio;
   this.gato = this.criarGato();
+  this.MaxLines = this.labirinto.length;
+  this.MaxColumns = this.labirinto[0].length;
 
   this.movimentos = {
     cima:{ x:0, y:-1 },

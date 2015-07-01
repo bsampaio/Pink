@@ -10,7 +10,7 @@ fs = require('fs');
 var model = {};
 
 
-var addAround = function(labirinto){
+var addAround = function (labirinto) {
   var barrier = new Array(labirinto[0].length+2).join('0');
   var newLab = [];
 

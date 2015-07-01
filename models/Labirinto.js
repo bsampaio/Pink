@@ -2,6 +2,7 @@
 /*Imports: */
 
 var rl = require('./readLab.js');
+var _ = require('lodash');
 
 //Funcao construtora
 var Labirinto = function (lab, tabCustos) {
@@ -27,15 +28,20 @@ var Labirinto = function (lab, tabCustos) {
   };
 
   this.criarGato = function(){
-    var x_maximum = this.labirinto[0].length-1;
-    var y_maximum = this.labirinto.length-1;
+    var x_maximum = this.labirinto.length-1;
+    var y_maximum = this.labirinto[0].length-1;
     var minimum = 0;
 
     var x = Math.floor(Math.random() * (x_maximum - minimum )) + minimum;
     var y = Math.floor(Math.random() * (y_maximum - minimum )) + minimum;
 
-    if(this.labirinto[x][y] == '0'){
-      return this.criarGato();
+    if(this.labirinto[x]){
+      if(this.labirinto[x][y] == '0'){
+        return this.criarGato();
+      }
+    }else{
+      console.log("Não existe o índice X="+x+" na matrix de labirintos");
+      console.log(this.labirinto);
     }
 
     return new Pos(x,y);
@@ -46,20 +52,17 @@ var Labirinto = function (lab, tabCustos) {
     var posX, posY;
     posX = pos.x;
     posY = pos.y;
+    var mov = [this.movimentos.cima, this.movimentos.esquerda]
+    for (var i = 0; i < mov.length; i++) {
+      var x = (mov[i].x + posX);
+      var y = (mov[i].y + posY);
 
-    [this.movimentos.cima, this.movimentos.esquerda].forEach((function (self) {
-      return function(m, index, array){
-        var x, y;
-        x = (m.x + posX);
-        y = (m.y + posY);
-
-        if ( (x >= 0 && x < self.MaxLines) && (y >= 0 && y < self.MaxColumns) ){
-          if(self.labirinto[y][x] !== '0'){
-            possiveis.push(new Pos(x,y));
-          }
+      if ( (x >= 0 && x < this.MaxLines) && (y >= 0 && y < this.MaxColumns) ){
+        if(this.labirinto[x][y] !== '0'){
+          possiveis.push(new Pos(x,y));
         }
-      };
-    }(this)));
+      }
+    }
 
     return possiveis;
   };
@@ -70,7 +73,7 @@ var Labirinto = function (lab, tabCustos) {
     var loop = (function (self) {
       return function(pos, r){
         r.push(pos);
-        if(pos == self.rato){
+        if(_.isEqual(pos,self.rato)){
           rotas.push(r);
         }else{
           var pMovimentos = self.possiveisMovimentos(pos);

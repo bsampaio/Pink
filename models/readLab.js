@@ -11,7 +11,7 @@ var model = {};
 
 
 var addAround = function (labirinto) {
-  var barrier = new Array(labirinto[0].length+2).join('0');
+  var barrier = new Array(labirinto[0].length+1).join('0');
   var newLab = [];
 
   labirinto.forEach(function(element, index, array){

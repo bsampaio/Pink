@@ -1,7 +1,7 @@
 
 /*Imports: */
 
-var rl = require('./readLab');
+var rl = require('./readLab.js');
 
 //Funcao construtora
 var Labirinto = function (lab, tabCustos) {
@@ -47,15 +47,19 @@ var Labirinto = function (lab, tabCustos) {
     posX = pos.x;
     posY = pos.y;
 
-    [this.movimentos.cima, this.movimentos.esquerda].forEach(function(m, index, array){
-      var x, y;
-      x = (m.x + posX);
-      y = (m.y + posY);
+    [this.movimentos.cima, this.movimentos.esquerda].forEach((function (self) {
+      return function(m, index, array){
+        var x, y;
+        x = (m.x + posX);
+        y = (m.y + posY);
 
-      if(this.labirinto[y][x] !== '0'){
-        possiveis.push(new Pos(x,y));
-      }
-    });
+        if (x >= 0 && y >= 0){
+          if(self.labirinto[y][x] !== '0'){
+            possiveis.push(new Pos(x,y));
+          }
+        }
+      };
+    }(this)));
 
     return possiveis;
   };
@@ -96,15 +100,15 @@ var Labirinto = function (lab, tabCustos) {
   };
 
   this.acharMenorRota = function(pos){
-    rotasPossiveis = this.fazRotas(pos);
+    var rotasPossiveis = this.fazRotas(pos);
 
     if(rotasPossiveis.length === 0){
       console.log("!!! Não tem rotas !!!");
       return;
     }
 
-    menorRota = rotasPossiveis[0];
-    menorPesoRota = this.calcularCustoRota(menorRota);
+    var menorRota = rotasPossiveis[0];
+    var menorPesoRota = this.calcularCustoRota(menorRota);
 
     for (var i = 0; i < rotasPossivels.length; i++) {
       var p = rotasPossivels[i];

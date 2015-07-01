@@ -1,6 +1,6 @@
 
 var PinkController = function(filename){
-  var LabirintoFactory = require('../models/Labirinto');
+  var LabirintoFactory = require('../models/Labirinto.js');
   var labirinto = new LabirintoFactory(filename).getLabirinto();
   this.labirinto = labirinto;
   this.ratoVivo = true;

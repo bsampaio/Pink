@@ -2,6 +2,11 @@
 var PinkController = function(filename){
   var LabirintoFactory = require('../models/Labirinto.js');
   var labirinto = new LabirintoFactory(filename).getLabirinto();
+
+  this.isEqual = function (posA, posB) {
+    return (posA.x === posB.x) && (posB.y === posA.y);
+  };
+
   this.labirinto = labirinto;
   this.ratoVivo = true;
   this.acabouJogo = false;
@@ -10,10 +15,12 @@ var PinkController = function(filename){
   this.perdeuJogo = function(){
     this.ratoVivo = false;
     this.acabouJogo = true;
+    console.log("Você PERDEU o jogo!");
   };
 
   this.ganhouJogo = function(){
     this.acabouJogo = true;
+    console.log("Você VENCEU o jogo!");
   };
 
   this.rodaTurno = function(){
@@ -28,15 +35,15 @@ var PinkController = function(filename){
         return;
       }
 
-      this.labirinto.gato = this.labirinto.gerarGato();
-      this.labirinto.moverRato(rota[rota.length-2]);
-      this.rota.push(rota[rota.length-2]);
+      this.labirinto.gato = this.labirinto.criarGato();
+      this.labirinto.moverRato(route[route.length-2]);
+      this.rota.push(route[route.length-2]);
 
-      if(this.labirinto.gato == this.labirinto.rato){
+      if( this.isEqual(this.labirinto.gato, this.labirinto.rato)){
         this.perdeuJogo();
       }
 
-      if(this.labirinto.rato == this.labirinto.fim){
+      if( this.isEqual(this.labirinto.rato, this.labirinto.fim)){
         this.ganhouJogo();
       }
     }

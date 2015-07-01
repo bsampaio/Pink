@@ -2,13 +2,18 @@
 /*Imports: */
 
 var rl = require('./readLab.js');
-var _ = require('lodash');
+
+
 
 //Funcao construtora
 var Labirinto = function (lab, tabCustos) {
 
   var Pos = function(x, y){
     return {"x":x,"y":y};
+  };
+
+  this.isEqual = function (posA, posB) {
+    return (posA.x === posB.x) && (posB.y === posA.y);
   };
 
   this.acharChar = function(c){
@@ -73,7 +78,7 @@ var Labirinto = function (lab, tabCustos) {
     var loop = (function (self) {
       return function(pos, r){
         r.push(pos);
-        if(_.isEqual(pos,self.rato)){
+        if(self.isEqual(pos,self.rato)){
           rotas.push(r);
         }else{
           var pMovimentos = self.possiveisMovimentos(pos);
@@ -90,9 +95,11 @@ var Labirinto = function (lab, tabCustos) {
   };
 
   this.calcularCustoRota = function(rota){
-    peso = 0;
-    for (var p in rota) {
-      if(p == this.gato){
+    var peso = 0;
+
+    for (var i = 0; i < rota.length; i++) {
+      var p = rota[i];
+      if(this.isEqual(p,this.gato)){
         peso = peso + Infinity;
       }else{
         peso = peso + parseInt(this.tabelaCustos[p.x][p.y]);
@@ -113,8 +120,8 @@ var Labirinto = function (lab, tabCustos) {
     var menorRota = rotasPossiveis[0];
     var menorPesoRota = this.calcularCustoRota(menorRota);
 
-    for (var i = 0; i < rotasPossivels.length; i++) {
-      var p = rotasPossivels[i];
+    for (var i = 0; i < rotasPossiveis.length; i++) {
+      var p = rotasPossiveis[i];
       var pesoRota = this.calcularCustoRota(p);
 
       if (menorPesoRota > pesoRota) {
